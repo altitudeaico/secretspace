@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Space — How It Works</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0F0F0F;
+  --ink2:       #1C1C1C;
+  --body:       #3D3D3D;
+  --subtle:     #767676;
+  --rule:       #E2E2E2;
+  --tint:       #F7F6F4;
+  --tint2:      #F0EEE9;
+  --white:      #FEFEFE;
+  --gold:       #B8924A;
+  --gold-light: #D4AB6A;
+  --gold-bg:    #FBF6ED;
+  --green:      #2D7A50;
+  --green-bg:   #EDF7F2;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--body);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PROGRESS ── */
+.progress-bar {
+  position: fixed; top:0; left:0;
+  height: 2px; background: var(--gold);
+  z-index: 1000; transition: width 0.1s; width: 0%;
+}
+
+/* ── NAV ── */
+.sticky-nav {
+  position: fixed; top:0; left:0; right:0;
+  height: 52px;
+  background: rgba(254,254,254,0.93);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--rule);
+  z-index: 999;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.nav-brand {
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--ink);
+}
+
+.nav-links { display: flex; gap: 28px; }
+
+.nav-link {
+  font-size: 12px; color: var(--subtle);
+  text-decoration: none; letter-spacing: 0.3px;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--ink); }
+.nav-link.active { color: var(--gold); font-weight: 500; }
+
+.nav-cta {
+  font-size: 12px; font-weight: 600;
+  background: var(--ink); color: white;
+  text-decoration: none;
+  padding: 7px 18px; border-radius: 100px;
+  transition: all 0.2s; letter-spacing: 0.3px;
+}
+.nav-cta:hover { background: var(--gold); }
+
+/* ── LAYOUT ── */
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 32px; }
+
+/* ── HERO ── */
+.hero {
+  padding: 140px 0 80px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.eyebrow {
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 24px;
+  display: block;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(44px, 6vw, 72px);
+  font-weight: 500; line-height: 1.1;
+  letter-spacing: -1px; color: var(--ink);
+  margin-bottom: 20px;
+  opacity: 0; animation: fadeUp 0.7s 0.1s ease forwards;
+}
+
+.hero-sub {
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 300; color: var(--body);
+  line-height: 1.65; max-width: 580px;
+  margin-bottom: 40px;
+  opacity: 0; animation: fadeUp 0.7s 0.2s ease forwards;
+}
+
+.hero-meta {
+  display: flex; gap: 40px; flex-wrap: wrap;
+  padding-top: 32px; border-top: 1px solid var(--rule);
+  opacity: 0; animation: fadeUp 0.7s 0.3s ease forwards;
+}
+.meta-item { display: flex; flex-direction: column; gap: 4px; }
+.meta-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--subtle);
+}
+.meta-value { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+/* ── OPENING NOTE ── */
+.opening-note {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--gold-bg);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  padding: 22px 26px; margin: 48px 0 0;
+}
+.opening-note-text {
+  font-size: 15px; color: var(--body); line-height: 1.65;
+}
+
+/* ── SECTIONS ── */
+section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--rule);
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+
+.section-eyebrow {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 500; line-height: 1.2;
+  color: var(--ink); letter-spacing: -0.4px;
+  margin-bottom: 20px;
+}
+
+.section-lead {
+  font-size: 19px; font-weight: 300;
+  color: var(--body); line-height: 1.7;
+  margin-bottom: 36px; max-width: 640px;
+}
+
+.section-body {
+  font-size: 16px; color: var(--body);
+  line-height: 1.8; margin-bottom: 24px;
+  max-width: 660px;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  border-left: 3px solid var(--gold);
+  background: var(--gold-bg);
+  border-radius: 0 10px 10px 0;
+  padding: 22px 26px; margin: 32px 0;
+}
+.callout-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px;
+}
+.callout-text {
+  font-size: 15px; color: var(--body); line-height: 1.7;
+}
+.callout-text p { margin-bottom: 10px; }
+.callout-text p:last-child { margin-bottom: 0; }
+
+.callout.green {
+  border-left-color: var(--green);
+  background: var(--green-bg);
+}
+.callout.green .callout-label { color: var(--green); }
+
+/* ── STAGE FLOW ── */
+.stages {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 12px; overflow: hidden;
+  margin: 32px 0;
+}
+@media(max-width:680px){ .stages { grid-template-columns:1fr; } }
+
+.stage {
+  background: var(--white);
+  padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.stage-num {
+  width: 28px; height: 28px;
+  background: var(--ink); color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.stage-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+.stage-desc { font-size: 12px; color: var(--subtle); line-height: 1.55; }
+
+/* ── INFO TABLE ── */
+.info-table {
+  border: 1px solid var(--rule);
+  border-radius: 12px; overflow: hidden;
+  margin: 32px 0;
+}
+.info-row {
+  display: grid; grid-template-columns: 200px 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+.info-row:last-child { border-bottom: none; }
+@media(max-width:560px){
+  .info-row { grid-template-columns: 1fr; }
+  .info-key { border-right: none; border-bottom: 1px solid var(--rule); }
+}
+.info-key {
+  background: var(--tint); padding: 16px 20px;
+  font-size: 14px; font-weight: 600; color: var(--ink2);
+  border-right: 1px solid var(--rule);
+  line-height: 1.5;
+}
+.info-val {
+  background: var(--white); padding: 16px 20px;
+  font-size: 14px; color: var(--body); line-height: 1.6;
+}
+
+/* ── CHECKLIST ── */
+.checklist { margin: 32px 0; display: flex; flex-direction: column; gap: 2px; }
+
+.checklist-item {
+  display: grid; grid-template-columns: 28px 1fr auto;
+  gap: 14px; align-items: start;
+  padding: 15px 18px;
+  background: var(--tint); border-radius: 8px;
+  transition: background 0.15s;
+}
+.checklist-item:hover { background: var(--tint2); }
+
+.checklist-num {
+  font-size: 11px; font-weight: 700;
+  color: var(--subtle); padding-top: 2px;
+}
+.checklist-title {
+  font-size: 14px; font-weight: 600;
+  color: var(--ink); margin-bottom: 2px;
+}
+.checklist-why { font-size: 12px; color: var(--subtle); }
+.checklist-when {
+  font-size: 11px; font-weight: 600;
+  color: var(--gold); white-space: nowrap;
+  text-align: right; padding-top: 2px;
+}
+
+/* ── MANUAL CARDS ── */
+.manual-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; margin: 32px 0;
+}
+@media(max-width:560px){ .manual-grid { grid-template-columns:1fr; } }
+
+.manual-card {
+  background: var(--tint); border-radius: 10px;
+  padding: 22px 24px;
+}
+.manual-card-title {
+  font-size: 14px; font-weight: 600;
+  color: var(--ink); margin-bottom: 6px;
+}
+.manual-card-desc { font-size: 13px; color: var(--subtle); line-height: 1.55; }
+
+/* ── TIMELINE ── */
+.timeline { margin: 32px 0; }
+.timeline-item {
+  display: grid; grid-template-columns: 110px 1fr;
+  gap: 24px; padding: 26px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.timeline-item:last-child { border-bottom: none; }
+@media(max-width:560px){ .timeline-item { grid-template-columns:1fr; gap:6px; } }
+
+.timeline-week {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.5px; color: var(--gold);
+  padding-top: 3px;
+}
+.timeline-title {
+  font-size: 16px; font-weight: 600;
+  color: var(--ink); margin-bottom: 6px;
+}
+.timeline-desc { font-size: 14px; color: var(--body); line-height: 1.65; }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding: 32px 0;
+  margin: 48px 0;
+}
+.pull-quote-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(20px, 2.5vw, 26px);
+  font-weight: 400; font-style: italic;
+  color: var(--ink2); line-height: 1.5;
+  margin-bottom: 12px;
+}
+.pull-quote-attr {
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--subtle);
+}
+
+/* ── SCREEN MOCK ── */
+.screen-wrap {
+  background: var(--ink);
+  border-radius: 14px; overflow: hidden;
+  margin: 32px 0; box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+.screen-bar {
+  background: #1A1A1A; padding: 12px 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.screen-dot { width: 10px; height: 10px; border-radius: 50%; }
+.screen-url {
+  flex: 1; background: rgba(255,255,255,0.07);
+  border-radius: 6px; padding: 5px 14px;
+  font-size: 12px; color: rgba(255,255,255,0.35);
+  font-family: 'DM Sans', sans-serif;
+  text-align: center; letter-spacing: 0.3px;
+}
+.screen-content {
+  padding: 28px 28px 24px;
+}
+.screen-caption {
+  background: rgba(184,146,74,0.08);
+  border-left: 2px solid var(--gold);
+  padding: 10px 16px; margin-top: 0;
+  border-radius: 0 0 14px 14px;
+}
+.screen-caption-text {
+  font-size: 13px; color: var(--gold-light); line-height: 1.55;
+}
+
+/* Mini pipeline preview inside screen */
+.mini-pipeline {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.mini-col { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 10px; }
+.mini-col-head {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 10px; padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.mini-card {
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px; padding: 8px 9px; margin-bottom: 6px;
+}
+.mini-card-name { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: 3px; }
+.mini-card-event { font-size: 9px; color: rgba(255,255,255,0.4); margin-bottom: 5px; }
+.mini-chip {
+  display: inline-block; font-size: 8px; font-weight: 700;
+  padding: 2px 6px; border-radius: 6px;
+}
+.chip-ai { background: rgba(184,146,74,0.2); color: #D4AB6A; }
+.chip-replied { background: rgba(139,95,191,0.2); color: #C084FC; }
+.chip-dep { background: rgba(200,120,64,0.2); color: #FB923C; }
+.chip-done { background: rgba(45,122,80,0.2); color: #6EE7B7; }
+
+/* Mini enquiry preview */
+.mini-enquiry {
+  background: rgba(255,255,255,0.05); border-radius: 8px; padding: 14px 16px;
+}
+.mini-msg {
+  background: rgba(255,255,255,0.07); border-radius: 4px 10px 10px 10px;
+  padding: 10px 12px; font-size: 11px; color: rgba(255,255,255,0.7);
+  line-height: 1.6; margin-bottom: 10px;
+}
+.mini-ai-box {
+  background: rgba(184,146,74,0.08); border-left: 2px solid var(--gold);
+  border-radius: 0 6px 6px 0; padding: 8px 12px; margin-bottom: 10px;
+}
+.mini-ai-label { font-size: 8px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.mini-ai-text { font-size: 10px; color: rgba(226,197,112,0.7); line-height: 1.6; }
+.mini-draft {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px; padding: 10px 12px;
+  font-size: 10px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 10px;
+}
+.mini-btns { display: flex; gap: 6px; }
+.mini-btn {
+  font-size: 10px; font-weight: 600; padding: 5px 12px;
+  border-radius: 100px; border: none; cursor: default;
+}
+.mini-btn-gold { background: var(--gold); color: #080808; }
+.mini-btn-grey { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+
+/* Mini requirements */
+.mini-req-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+.mini-req-tile {
+  background: rgba(255,255,255,0.05); border-radius: 6px;
+  padding: 8px 9px; border: 1px solid rgba(255,255,255,0.06);
+}
+.mini-req-tile.sel { background: rgba(184,146,74,0.12); border-color: rgba(184,146,74,0.3); }
+.mini-req-title { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.8); margin-bottom: 2px; }
+.mini-req-sub { font-size: 9px; color: rgba(255,255,255,0.35); }
+.mini-req-tile.sel .mini-req-sub { color: rgba(184,146,74,0.6); }
+
+/* Mini analytics */
+.mini-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 12px; }
+.mini-stat { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 12px; }
+.mini-stat-label { font-size: 8px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+.mini-stat-val { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+
+/* ── CTA BLOCK ── */
+.cta-block {
+  background: var(--ink); border-radius: 16px;
+  padding: 52px 56px; margin: 0 0 80px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-block::before {
+  content: '';
+  position: absolute; top:-80px; right:-80px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(184,146,74,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 500; color: white;
+  margin-bottom: 12px; letter-spacing: -0.3px;
+}
+.cta-sub {
+  font-size: 16px; color: rgba(255,255,255,0.5);
+  margin-bottom: 32px; line-height: 1.65;
+}
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold); color: var(--ink);
+  text-decoration: none; padding: 16px 36px;
+  border-radius: 100px; font-size: 16px; font-weight: 600;
+  transition: all 0.2s; letter-spacing: 0.2px;
+}
+.cta-btn:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 8px 28px rgba(184,146,74,0.35); }
+.cta-btn svg { transition: transform 0.2s; }
+.cta-btn:hover svg { transform: translateX(4px); }
+.cta-note { margin-top: 16px; font-size: 13px; color: rgba(255,255,255,0.3); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 36px 0;
+}
+.footer-inner {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-brand {
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--ink);
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-link { font-size: 13px; color: var(--subtle); text-decoration: none; }
+.footer-copy { font-size: 12px; color: var(--subtle); width: 100%; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+@media(max-width:768px){
+  .sticky-nav .nav-links { display: none; }
+  .wrap { padding: 0 20px; }
+  .mini-pipeline { grid-template-columns: 1fr 1fr; }
+  .mini-stats { grid-template-columns: 1fr 1fr; }
+  .cta-block { padding: 36px 28px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav class="sticky-nav">
+  <div class="nav-brand">Altitude AI Consulting</div>
+  <div class="nav-links">
+    <a href="#overview" class="nav-link">Overview</a>
+    <a href="#pipeline" class="nav-link">Pipeline</a>
+    <a href="#replies" class="nav-link">Replies</a>
+    <a href="#requirements" class="nav-link">Requirements</a>
+    <a href="#knowledge" class="nav-link">Knowledge Base</a>
+    <a href="#setup" class="nav-link">Setup</a>
+  </div>
+  <a href="https://altitudeaico.github.io/secretspace/proposal.html" class="nav-cta">View Proposal</a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="wrap">
+  <div class="hero" id="overview">
+    <span class="eyebrow">How It Works — Secret Space</span>
+    <h1 class="hero-title">Your booking process,<br>on autopilot.</h1>
+    <p class="hero-sub">A plain-English guide to what we're building for Secret Space — what it does, how it works, and what it means for how you spend your time day to day.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Prepared for</span>
+        <span class="meta-value">Kam — Secret Space, Birmingham</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Prepared by</span>
+        <span class="meta-value">Bolaji Olatoye — Altitude AI Consulting</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Version</span>
+        <span class="meta-value">March 2026 — Draft for discussion</span>
+      </div>
+    </div>
+
+    <div class="opening-note">
+      <div style="font-size:20px;flex-shrink:0;margin-top:2px;">💡</div>
+      <div class="opening-note-text"><strong>This is a starting point, not a final spec.</strong> Everything described here will be shaped and refined together once we get started. Think of it as a shared picture of where we're heading. The first few weeks after launch are always a tuning period — we adjust anything that isn't exactly right until it fits Secret Space perfectly.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION 1: THE PROBLEM ── -->
+<div class="wrap">
+  <section id="pipeline">
+    <span class="section-eyebrow">The Problem</span>
+    <h2 class="section-title">The work that's eating your time</h2>
+    <p class="section-lead">Every booking at Secret Space follows the same pattern. A message comes in. You read it, work out the price, write a reply, send an invoice, tailor the contract, chase the deposit, update the calendar. Each step takes a few minutes. Together they take the better part of an hour — for every single booking.</p>
+
+    <div class="pull-quote">
+      <div class="pull-quote-text">"I should be working smart. I'm just working hard."</div>
+      <div class="pull-quote-attr">Kam — Secret Space</div>
+    </div>
+
+    <p class="section-body">That's the problem this system solves. Not by replacing Kam's judgement or his relationships — but by removing the repetitive admin layer that sits between an enquiry arriving and a booking being confirmed.</p>
+    <p class="section-body">Once this is live, a client sends a message. By the time Kam glances at his phone, the reply has already gone, the requirements have been collected, the contract is out for signing, and the calendar has been updated. Kam's involvement, for a typical booking, is a single tap — or nothing at all.</p>
+
+    <div class="callout">
+      <div class="callout-label">The goal in one sentence</div>
+      <div class="callout-text">From the moment an enquiry arrives to the moment a booking is confirmed — calendar updated, contract signed, deposit received, invoice sent — the system handles it. Kam steps in only when something genuinely needs his attention.</div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 2: THE PIPELINE ── -->
+<div class="wrap">
+  <section>
+    <span class="section-eyebrow">The Pipeline</span>
+    <h2 class="section-title">Five stages. The system moves things forward.</h2>
+    <p class="section-lead">Every enquiry enters a five-stage pipeline. The system handles each transition automatically. Kam sees the whole picture at a glance — where every booking is, what's been done, and what (if anything) is waiting for him.</p>
+
+    <div class="stages">
+      <div class="stage">
+        <div class="stage-num">1</div>
+        <div class="stage-title">Enquiry arrives</div>
+        <div class="stage-desc">Message lands from Instagram DM, WhatsApp, or email. System reads it immediately.</div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">2</div>
+        <div class="stage-title">Reply sent</div>
+        <div class="stage-desc">Reply goes to client — usually within seconds. Sounds like Kam because it's learned from his messages.</div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">3</div>
+        <div class="stage-title">Requirements in</div>
+        <div class="stage-desc">Client fills in a short form — room, sound, catering, security. No back and forth.</div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">4</div>
+        <div class="stage-title">Deposit paid</div>
+        <div class="stage-desc">Client pays securely online. Contract auto-generated and sent for signing at the same moment.</div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">5</div>
+        <div class="stage-title">Confirmed</div>
+        <div class="stage-desc">Both signed. Calendar updated. Invoice sent. Done.</div>
+      </div>
+    </div>
+
+    <!-- PIPELINE SCREEN MOCK -->
+    <div class="screen-wrap">
+      <div class="screen-bar">
+        <div class="screen-dot" style="background:#FF5F57;"></div>
+        <div class="screen-dot" style="background:#FFBD2E;"></div>
+        <div class="screen-dot" style="background:#28CA41;"></div>
+        <div class="screen-url">altitudeaico.github.io/secretspace</div>
+      </div>
+      <div class="screen-content">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">Booking Pipeline — Live View</div>
+        <div class="mini-pipeline">
+          <div class="mini-col">
+            <div class="mini-col-head" style="color:#60A5FA;">① Received</div>
+            <div class="mini-card">
+              <div class="mini-card-name">@ellasevents_brum</div>
+              <div class="mini-card-event">Corporate · 80 guests</div>
+              <div class="mini-chip chip-ai">AI Draft Ready</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-name">marcus@bloom.co.uk</div>
+              <div class="mini-card-event">Shoot · Half day</div>
+              <div class="mini-chip" style="background:rgba(74,144,196,0.2);color:#7EC8E3;">Review Needed</div>
+            </div>
+          </div>
+          <div class="mini-col">
+            <div class="mini-col-head" style="color:#C084FC;">② Replied</div>
+            <div class="mini-card">
+              <div class="mini-card-name">Sarah K.</div>
+              <div class="mini-card-event">Birthday · 40 guests</div>
+              <div class="mini-chip chip-replied">Auto-replied</div>
+            </div>
+          </div>
+          <div class="mini-col">
+            <div class="mini-col-head" style="color:#FB923C;">③ Qualified</div>
+            <div class="mini-card">
+              <div class="mini-card-name">@jadeandco</div>
+              <div class="mini-card-event">Networking · 60 pax</div>
+              <div class="mini-chip chip-dep">Awaiting Deposit</div>
+            </div>
+          </div>
+          <div class="mini-col">
+            <div class="mini-col-head" style="color:#6EE7B7;">④ Confirmed</div>
+            <div class="mini-card">
+              <div class="mini-card-name">Vertex Consulting</div>
+              <div class="mini-card-event">Away day · 35 pax</div>
+              <div class="mini-chip chip-done">£1,800</div>
+            </div>
+          </div>
+          <div class="mini-col">
+            <div class="mini-col-head" style="color:rgba(255,255,255,0.3);">⑤ Invoiced</div>
+            <div class="mini-card" style="opacity:0.5;">
+              <div class="mini-card-name">Bloom Agency</div>
+              <div class="mini-card-event">Shoot · 28 Jun</div>
+              <div class="mini-chip chip-done">Paid ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-caption">
+        <div class="screen-caption-text">The live pipeline — every enquiry tracked through every stage. Cards move automatically as the system completes each step. Kam sees exactly where things stand at a glance.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 3: THE REPLY ── -->
+<div class="wrap">
+  <section id="replies">
+    <span class="section-eyebrow">The AI Reply</span>
+    <h2 class="section-title">Replies that sound like Kam, sent in seconds</h2>
+    <p class="section-lead">When a message comes in, the system doesn't send a generic acknowledgement. It reads the message, understands what's being asked, checks the calendar, looks up the right price, and writes a reply using the same tone Kam uses himself.</p>
+
+    <p class="section-body">It's able to do this because before we go live, we train it on Kam's past conversations — his WhatsApp messages, email replies, the way he phrases things with different types of clients. Corporate enquiries get a professional, direct reply. Birthday party enquiries get something warmer. The system learns the difference.</p>
+
+    <!-- ENQUIRY SCREEN MOCK -->
+    <div class="screen-wrap">
+      <div class="screen-bar">
+        <div class="screen-dot" style="background:#FF5F57;"></div>
+        <div class="screen-dot" style="background:#FFBD2E;"></div>
+        <div class="screen-dot" style="background:#28CA41;"></div>
+        <div class="screen-url">Secret Space — Enquiry Detail</div>
+      </div>
+      <div class="screen-content">
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">From @ellasevents_brum · Instagram DM · Today 09:14</div>
+        <div class="mini-msg">Hi, we're looking to hire the space for a corporate drinks event, Thursday 12 June, around 80 guests. What are your rates and is the date available?</div>
+        <div class="mini-ai-box">
+          <div class="mini-ai-label">🤖 What the AI did — automatically</div>
+          <div class="mini-ai-text">Classified: weekday corporate hire · 80 guests · 12 June · Checked calendar: date is free · Applied rate: weekday evening £1,400 · Tone matched to Kam's past replies · Confidence: 94% — draft ready to send</div>
+        </div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">AI-Drafted Reply — edit before sending if needed</div>
+        <div class="mini-draft">Hi! Thanks for reaching out — we'd love to host your corporate event at Secret Space 🎉<br><br>Thursday 12 June is available and perfect for 80 guests. Weekday evening hire starts from £1,400 — includes exclusive use of the full space, PA system, and bar setup. A 30% deposit (£420) secures the date, balance due 14 days before.<br><br>I'll send our full info pack across now. — Kam, Secret Space</div>
+        <div class="mini-btns">
+          <div class="mini-btn mini-btn-gold">✓ Send Reply</div>
+          <div class="mini-btn mini-btn-grey">↻ Regenerate</div>
+          <div class="mini-btn mini-btn-grey">Edit</div>
+        </div>
+      </div>
+      <div class="screen-caption">
+        <div class="screen-caption-text">The enquiry detail view. The system shows exactly what it understood, the rate it applied, and the draft reply. Kam sends as-is, edits, or regenerates — in seconds.</div>
+      </div>
+    </div>
+
+    <p class="section-body">Every draft shows a confidence score. When confidence is high — 85% or above — the reply sends automatically without Kam touching it. When it's lower, the system holds the reply and asks Kam to review it first. That threshold can be adjusted to whatever level of control feels right.</p>
+
+    <div class="callout">
+      <div class="callout-label">How Kam's time changes</div>
+      <div class="callout-text">
+        <p>For a standard enquiry — corporate evening, birthday party, networking event — Kam's involvement is one tap to approve, or nothing at all if the system sends automatically.</p>
+        <p>For an unusual request, the system flags it. Kam reviews in seconds. After that, everything else happens without him.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 4: REQUIREMENTS ── -->
+<div class="wrap">
+  <section id="requirements">
+    <span class="section-eyebrow">Requirements</span>
+    <h2 class="section-title">Everything collected in one step — no back and forth</h2>
+    <p class="section-lead">Once a client confirms they want to go ahead, the system sends them a requirements form. They pick their options. The system prices it in real time. Everything is locked in without a single additional message.</p>
+
+    <!-- REQUIREMENTS SCREEN MOCK -->
+    <div class="screen-wrap">
+      <div class="screen-bar">
+        <div class="screen-dot" style="background:#FF5F57;"></div>
+        <div class="screen-dot" style="background:#FFBD2E;"></div>
+        <div class="screen-dot" style="background:#28CA41;"></div>
+        <div class="screen-url">Secret Space — New Booking</div>
+      </div>
+      <div class="screen-content">
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Sound Setup</div>
+        <div class="mini-req-grid">
+          <div class="mini-req-tile">
+            <div class="mini-req-title">Low</div>
+            <div class="mini-req-sub">Background music, speeches</div>
+          </div>
+          <div class="mini-req-tile sel">
+            <div class="mini-req-title">Mid</div>
+            <div class="mini-req-sub">DJ, live band, dancing</div>
+          </div>
+          <div class="mini-req-tile">
+            <div class="mini-req-title">High</div>
+            <div class="mini-req-sub">Festival, full production</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:14px;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Catering</div>
+        <div class="mini-req-grid">
+          <div class="mini-req-tile">
+            <div class="mini-req-title">Internal</div>
+            <div class="mini-req-sub">Approved caterer</div>
+          </div>
+          <div class="mini-req-tile sel">
+            <div class="mini-req-title">External</div>
+            <div class="mini-req-sub">PLI form auto-sent</div>
+          </div>
+          <div class="mini-req-tile">
+            <div class="mini-req-title">Bar Only</div>
+            <div class="mini-req-sub">Drinks only</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding:12px 14px;background:rgba(184,146,74,0.08);border:1px solid rgba(184,146,74,0.2);border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:11px;color:rgba(255,255,255,0.4);">Auto-calculated hire fee</span>
+          <span style="font-size:20px;font-weight:700;color:var(--gold-light);letter-spacing:-0.5px;">£1,400</span>
+        </div>
+      </div>
+      <div class="screen-caption">
+        <div class="screen-caption-text">Requirements are selected directly — space, sound level, security, catering. Pricing updates automatically as each option is chosen.</div>
+      </div>
+    </div>
+
+    <div class="info-table">
+      <div class="info-row">
+        <div class="info-key">Space</div>
+        <div class="info-val">Full Venue, Main Hall, Mezzanine, or VIP Suite</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Sound level</div>
+        <div class="info-val">Low — background music and speeches. Mid — DJ or live band. High — full festival production. Sound team briefed automatically on confirmation.</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Security</div>
+        <div class="info-val">1 guard included as standard. 2 guards for larger events. Client-provided option also available.</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Catering</div>
+        <div class="info-val">Internal approved caterer, external caterer (PLI insurance form sent automatically), bar only, or dry hire.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">The sound engineer consultation — eliminated</div>
+      <div class="callout-text">Currently every event needs a back-and-forth with the sound engineer to confirm the right setup. With Low, Mid, and High as standard options, the system briefs the sound team automatically the moment a booking is confirmed. No call needed for standard events. We'll define the specs for each level in the Week 1 setup session.</div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 5: CONTRACTS & INVOICES ── -->
+<div class="wrap">
+  <section>
+    <span class="section-eyebrow">Contracts & Invoices</span>
+    <h2 class="section-title">Generated and sent — without lifting a finger</h2>
+    <p class="section-lead">The moment a deposit is paid, the system generates the contract from the booking details, picks the right template, fills in every field, and sends it to the client for digital signing. Kam countersigns with one tap. The invoice goes out at the same moment.</p>
+
+    <div class="info-table">
+      <div class="info-row">
+        <div class="info-key">Contract templates</div>
+        <div class="info-val">Standard hire, corporate, multi-day, and creative shoot — the right one selected automatically based on the booking type</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">E-signature</div>
+        <div class="info-val">Sent to the client via their channel (Instagram, WhatsApp, or email) for digital signing. Stored automatically on completion.</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Invoice</div>
+        <div class="info-val">Generated from booking details and sent on confirmation. No manual input at any point.</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Deposit chase</div>
+        <div class="info-val">Automated reminder if deposit isn't paid within 48 hours. Balance reminder sent 14 days before the event.</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Google Calendar</div>
+        <div class="info-val">Updated the moment the deposit clears — with all event details. No manual entry, ever.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 6: KNOWLEDGE BASE ── -->
+<div class="wrap">
+  <section id="knowledge">
+    <span class="section-eyebrow">The Knowledge Base</span>
+    <h2 class="section-title">The system learns Secret Space — and remembers everything</h2>
+    <p class="section-lead">Before we go live, we train the system on how Secret Space actually works. Not from scratch — from Kam's real history. The rates, the reply style, the contracts, the way he handles different types of enquiries. All of it goes in. After that, it runs on that knowledge and gets sharper over time.</p>
+
+    <p class="section-body">Kam can see everything the system knows at any point — the rate card, the response library, the contract templates, the documents it sends automatically. If something isn't right, it can be updated in minutes. It's transparent, not a black box.</p>
+
+    <div class="info-table">
+      <div class="info-row">
+        <div class="info-key">Rate card</div>
+        <div class="info-val">All hire rates by day type, space, and duration — what the system uses to price every booking automatically</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Reply library</div>
+        <div class="info-val">Learned from Kam's real messages — the system knows how he responds to different types of enquiries across eight common scenarios</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Sound specs</div>
+        <div class="info-val">Low, Mid, and High setup details — used to brief the sound team correctly without consultation</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Contract templates</div>
+        <div class="info-val">Four templates — standard, corporate, multi-day, shoot — each auto-populated from booking details</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Auto-send documents</div>
+        <div class="info-val">Media pack, PLI insurance form, requirements form — each sent automatically at the right moment</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">Profitability data</div>
+        <div class="info-val">Margin by event type — drawn from past invoices and the staff hours log, so Kam can see what's actually making money</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Profitability — finally visible</div>
+      <div class="callout-text">
+        <p>Most venue owners track revenue. Very few track true margin — because accounting for staff hours, setup time, and variable costs against each booking is time-consuming work nobody ever gets around to.</p>
+        <p>By pulling in Kam's past invoices and the hours log he keeps in Excel, the system calculates the actual margin per event type. That kind of insight changes how you price and what enquiries you prioritise. Salsa and dance events may look healthy on revenue but far less so once hours are factored in. Corporate evenings may be the opposite.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 7: ANALYTICS ── -->
+<div class="wrap">
+  <section>
+    <span class="section-eyebrow">Analytics</span>
+    <h2 class="section-title">The 5-minute view — what's working, what isn't</h2>
+    <p class="section-lead">Kam described wanting a quick view of the business — something he can check in two minutes and know whether things are going in the right direction. The analytics dashboard gives exactly that.</p>
+
+    <!-- ANALYTICS SCREEN MOCK -->
+    <div class="screen-wrap">
+      <div class="screen-bar">
+        <div class="screen-dot" style="background:#FF5F57;"></div>
+        <div class="screen-dot" style="background:#FFBD2E;"></div>
+        <div class="screen-dot" style="background:#28CA41;"></div>
+        <div class="screen-url">Secret Space — Analytics</div>
+      </div>
+      <div class="screen-content">
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">This Month</div>
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Revenue</div>
+            <div class="mini-stat-val" style="color:var(--gold-light);">£8k</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Conversion</div>
+            <div class="mini-stat-val" style="color:#6EE7B7;">71%</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Response</div>
+            <div class="mini-stat-val" style="color:rgba(255,255,255,0.85);">4 min</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Kam's time</div>
+            <div class="mini-stat-val" style="color:#60A5FA;">&lt;2m</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:12px 14px;background:rgba(184,146,74,0.07);border:1px solid rgba(184,146,74,0.15);border-radius:8px;">
+          <div style="font-size:9px;color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">🤖 Insight from your data</div>
+          <div style="font-size:11px;color:rgba(226,197,112,0.7);line-height:1.6;">82% of revenue is corporate. Weekdays Tue–Thu are largely unused. Two additional weekday bookings per month = ~£3,000 extra revenue with no additional overhead.</div>
+        </div>
+      </div>
+      <div class="screen-caption">
+        <div class="screen-caption-text">Revenue, conversion rate, response time, and Kam's time per booking — updated in real time. AI-generated insights surface patterns Kam wouldn't have time to find himself.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 8: WHAT STAYS MANUAL ── -->
+<div class="wrap">
+  <section>
+    <span class="section-eyebrow">What Stays Manual</span>
+    <h2 class="section-title">What the system doesn't replace</h2>
+    <p class="section-lead">Not everything should be automated. Some things need Kam's presence, his judgement, and his relationships. The system is designed to remove the admin layer so Kam can give more energy to the things that actually need him.</p>
+
+    <div class="manual-grid">
+      <div class="manual-card">
+        <div class="manual-card-title">Event day management</div>
+        <div class="manual-card-desc">Staff check-in, on-site logistics, anything that happens during the event. Kam and his team handle this.</div>
+      </div>
+      <div class="manual-card">
+        <div class="manual-card-title">Complex negotiations</div>
+        <div class="manual-card-desc">Large-scale events, unusual requests, multi-event deals. The system flags these for Kam to handle personally.</div>
+      </div>
+      <div class="manual-card">
+        <div class="manual-card-title">Key client relationships</div>
+        <div class="manual-card-desc">Returning clients and important bookings stay personal. The system handles the admin; Kam handles the relationship.</div>
+      </div>
+      <div class="manual-card">
+        <div class="manual-card-title">Instagram content</div>
+        <div class="manual-card-desc">Kam asked for tool recommendations rather than a custom build. We'll share a short list of the best off-the-shelf options — no charge.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 9: SETUP CHECKLIST ── -->
+<div class="wrap">
+  <section id="setup">
+    <span class="section-eyebrow">What We Need from Kam</span>
+    <h2 class="section-title">Thirteen items. Thirty minutes. That's it.</h2>
+    <p class="section-lead">Getting the system set up requires a one-off collection of information and documents from Kam. Almost all of it happens in a single 30-minute call in Week 1. After that, Conquer AI handles the build — Kam's involvement during the four weeks is under an hour in total.</p>
+
+    <div class="checklist">
+      <div class="checklist-item">
+        <div class="checklist-num">01</div>
+        <div class="checklist-content">
+          <div class="checklist-title">WhatsApp message history</div>
+          <div class="checklist-why">Trains the AI on how Kam writes — so replies sound natural and personal</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">02</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Past email enquiries</div>
+          <div class="checklist-why">Same purpose — the more examples, the better the replies</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">03</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Current rate card</div>
+          <div class="checklist-why">So the system prices every booking correctly from day one</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">04</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Existing contract templates</div>
+          <div class="checklist-why">The system uses Kam's actual contracts — not generic replacements</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">05</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Past invoices (as many as possible)</div>
+          <div class="checklist-why">Used to calculate true profitability by event type</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">06</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Staff hours log (Excel)</div>
+          <div class="checklist-why">Cross-referenced with invoices to show real margin per event type</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">07</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Current media pack</div>
+          <div class="checklist-why">Auto-attached to every first reply — no manual sending required</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">08</div>
+        <div class="checklist-content">
+          <div class="checklist-title">External caterer PLI form</div>
+          <div class="checklist-why">Auto-sent the moment a client selects external catering</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">09</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Sound setup specs (Low / Mid / High)</div>
+          <div class="checklist-why">Lets the system brief the sound team correctly — no consultation needed</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">10</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Internal caterer details and menu</div>
+          <div class="checklist-why">Sent to clients automatically when internal catering is selected</div>
+        </div>
+        <div class="checklist-when">Week 1</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">11</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Google Calendar access</div>
+          <div class="checklist-why">Confirmed bookings sync automatically on deposit payment</div>
+        </div>
+        <div class="checklist-when">Week 3 — 5 mins</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">12</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Stripe account</div>
+          <div class="checklist-why">Deposit and balance payment processing</div>
+        </div>
+        <div class="checklist-when">Week 3 — 20 mins</div>
+      </div>
+      <div class="checklist-item">
+        <div class="checklist-num">13</div>
+        <div class="checklist-content">
+          <div class="checklist-title">Instagram Business account access</div>
+          <div class="checklist-why">To receive and reply to DMs through the system</div>
+        </div>
+        <div class="checklist-when">Week 3</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SECTION 10: TIMELINE ── -->
+<div class="wrap">
+  <section>
+    <span class="section-eyebrow">Delivery</span>
+    <h2 class="section-title">Four weeks, from setup to live</h2>
+    <p class="section-lead">Kam's involvement is concentrated in Week 1. After that, Altitude AI handles the build and checks in regularly. By Week 4, the system is live and Kam has a full video walkthrough to refer back to.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-week">Week 1</div>
+        <div>
+          <div class="timeline-title">Setup and knowledge base</div>
+          <div class="timeline-desc">30-minute session with Kam. All documents and data collected. Rate card entered. AI trained on Kam's real messages, contracts, and invoices. Sound options defined. Knowledge base ready to go.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-week">Week 2</div>
+        <div>
+          <div class="timeline-title">Core system build</div>
+          <div class="timeline-desc">AI enquiry engine built. Auto-reply, classification, and pricing working. Pipeline dashboard live. Requirements form built and connected. All pieces talking to each other.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-week">Week 3</div>
+        <div>
+          <div class="timeline-title">Connections and integrations</div>
+          <div class="timeline-desc">Stripe payments connected. Google Calendar sync live. Contract e-sign set up. Invoice generation built. Instagram, WhatsApp, and email channels all connected to the system.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-week">Week 4</div>
+        <div>
+          <div class="timeline-title">Testing, refinement, and handover</div>
+          <div class="timeline-desc">Full end-to-end testing with realistic scenarios. Adjustments made based on Kam's feedback. Video walkthrough recorded. Written guide produced. System goes live.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <div class="callout-label">Kam's total time commitment</div>
+      <div class="callout-text">Approximately 90 minutes across the four weeks — mostly in the Week 1 setup session. After go-live, typical daily usage is under two minutes: a quick look at the pipeline to see if anything needs approval.</div>
+    </div>
+  </section>
+</div>
+
+<!-- ── CTA ── -->
+<div class="wrap">
+  <div class="cta-block">
+    <div class="cta-title">Ready to see the full proposal?</div>
+    <div class="cta-sub">Investment, terms, and everything else in one place.</div>
+    <a href="https://altitudeaico.github.io/secretspace/proposal.html" class="cta-btn">
+      View the Proposal
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <div class="cta-note">Questions? Message Bolaji directly on WhatsApp.</div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">Altitude AI Consulting</div>
+      <div class="footer-links">
+        <a href="mailto:hello@altitudeai.co" class="footer-link">hello@altitudeai.co</a>
+        <a href="https://altitudeaico.github.io/secretspace/" class="footer-link" target="_blank">View Prototype</a>
+        <a href="https://altitudeaico.github.io/secretspace/proposal.html" class="footer-link">Proposal</a>
+      </div>
+      <div class="footer-copy">© 2026 Altitude AI Consulting. Prepared for Secret Space, Birmingham. Confidential.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progress').style.width = (window.scrollY / total * 100) + '%';
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, { threshold: 0.07 });
+document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+// Active nav
+const ids = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  ids.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+});
+</script>
+</body>
+</html>
