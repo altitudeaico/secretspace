@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Space — Complete Your Payment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:      #0F0F0F;
+  --ink2:     #1C1C1C;
+  --body:     #3D3D3D;
+  --subtle:   #767676;
+  --rule:     #E2E2E2;
+  --tint:     #F7F6F4;
+  --tint2:    #F0EEE9;
+  --white:    #FEFEFE;
+  --gold:     #B8924A;
+  --gold-light:#D4AB6A;
+  --gold-bg:  #FBF6ED;
+  --green:    #2D7A50;
+  --green-bg: #EDF7F2;
+  --red:      #C0392B;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--tint);
+  color: var(--body);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 40px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar-brand {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.topbar-secure {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--subtle);
+}
+.topbar-secure svg { color: var(--green); }
+
+/* ── MAIN LAYOUT ── */
+.page {
+  min-height: calc(100vh - 52px);
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  max-width: 1100px;
+  margin: 0 auto;
+  gap: 0;
+}
+
+@media(max-width: 860px) {
+  .page { grid-template-columns: 1fr; }
+  .page-left { order: 2; }
+  .page-right { order: 1; }
+}
+
+/* ── LEFT — ORDER SUMMARY ── */
+.page-left {
+  padding: 60px 56px 60px 40px;
+  background: var(--tint);
+  border-right: 1px solid var(--rule);
+}
+
+@media(max-width: 860px) {
+  .page-left { padding: 40px 24px; border-right: none; border-top: 1px solid var(--rule); }
+}
+
+.summary-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.summary-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.summary-sub {
+  font-size: 14px;
+  color: var(--subtle);
+  margin-bottom: 40px;
+}
+
+.order-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+  gap: 20px;
+}
+.order-line:first-of-type { border-top: 1px solid var(--rule); }
+
+.order-line-label { font-size: 14px; color: var(--body); flex: 1; line-height: 1.5; }
+.order-line-sub { font-size: 12px; color: var(--subtle); margin-top: 2px; }
+.order-line-price { font-size: 14px; font-weight: 600; color: var(--ink); flex-shrink: 0; }
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0 0;
+  margin-top: 4px;
+}
+.order-total-label { font-size: 16px; font-weight: 600; color: var(--ink); }
+.order-total-price {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+}
+
+.what-happens {
+  margin-top: 40px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.what-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 16px;
+}
+
+.what-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.what-item:last-child { margin-bottom: 0; }
+
+.what-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.what-text {
+  font-size: 13px;
+  color: var(--body);
+  line-height: 1.55;
+}
+.what-text strong { color: var(--ink); }
+
+/* ── RIGHT — PAYMENT FORM ── */
+.page-right {
+  background: var(--white);
+  padding: 60px 40px;
+}
+
+@media(max-width: 860px) {
+  .page-right { padding: 40px 24px; }
+}
+
+.form-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+/* ── PAYMENT METHOD TABS ── */
+.payment-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.pm-tab {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--subtle);
+  background: var(--white);
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.pm-tab:hover { border-color: var(--ink); color: var(--ink); }
+.pm-tab.active { border-color: var(--ink); color: var(--ink); background: var(--tint); border-width: 2px; }
+.pm-tab-icon { font-size: 18px; }
+
+/* ── FORM FIELDS ── */
+.field-group { margin-bottom: 20px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.field-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 7px;
+  display: block;
+}
+
+.field-input {
+  width: 100%;
+  background: var(--tint);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+
+.field-input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(15,15,15,0.06);
+  background: var(--white);
+}
+
+.field-input.error { border-color: var(--red); }
+
+.field-input.card-number {
+  letter-spacing: 2px;
+  font-size: 16px;
+}
+
+/* Card icons row */
+.card-icons {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.card-icon {
+  width: 36px;
+  height: 24px;
+  background: var(--tint2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--subtle);
+}
+
+/* ── SECTION DIVIDER IN FORM ── */
+.form-section {
+  margin: 24px 0 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.form-section::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* ── BANK TRANSFER SECTION ── */
+.bank-details {
+  display: none;
+  background: var(--tint);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.bank-details.show { display: block; }
+
+.bank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 14px;
+}
+.bank-row:last-child { border-bottom: none; }
+.bank-key { color: var(--subtle); }
+.bank-val { font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.copy-btn {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--subtle);
+  font-family: inherit;
+  transition: all 0.12s;
+}
+.copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+.copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+.bank-note {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--subtle);
+  line-height: 1.55;
+}
+
+/* ── PAY BUTTON ── */
+.pay-btn {
+  width: 100%;
+  background: var(--ink);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  letter-spacing: 0.2px;
+}
+.pay-btn:hover { background: var(--gold); transform: translateY(-1px); box-shadow: 0 8px 28px rgba(184,146,74,0.28); }
+.pay-btn:active { transform: translateY(0); }
+.pay-btn.loading { opacity: 0.7; pointer-events: none; }
+
+/* ── SECURITY NOTE ── */
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--subtle);
+  margin-bottom: 24px;
+}
+
+/* ── SUCCESS STATE ── */
+.success-screen {
+  display: none;
+  text-align: center;
+  padding: 40px 0;
+  animation: fadeUp 0.5s ease;
+}
+.success-screen.show { display: block; }
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  background: var(--green-bg);
+  border: 1px solid rgba(45,122,80,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 24px;
+}
+
+.success-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+}
+
+.success-body {
+  font-size: 15px;
+  color: var(--body);
+  line-height: 1.7;
+  margin-bottom: 8px;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.success-ref {
+  font-size: 12px;
+  color: var(--subtle);
+  margin-top: 20px;
+}
+
+.success-next {
+  margin-top: 32px;
+  background: var(--tint);
+  border-radius: 10px;
+  padding: 20px 24px;
+  text-align: left;
+}
+.success-next-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 12px;
+}
+.success-step {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--body);
+}
+.success-step:last-child { margin-bottom: 0; }
+.success-step-dot {
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── ANIMATION ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.form-area { animation: fadeUp 0.4s 0.1s ease both; }
+</style>
+</head>
+<body>
+
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="topbar-brand">Altitude AI Consulting</div>
+  <div class="topbar-secure">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Secure checkout
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── LEFT: ORDER SUMMARY ── -->
+  <div class="page-left">
+    <div class="summary-eyebrow">Altitude AI Consulting</div>
+    <div class="summary-title">Secret Space<br>AI Booking Engine</div>
+    <div class="summary-sub">Phase 1 — Full Build</div>
+
+    <div class="order-line">
+      <div class="order-line-label">
+        AI Booking Engine — Full Build
+        <div class="order-line-sub">Enquiry engine · Auto-replies · Requirements form · Stripe payments · Contract generation · Google Calendar sync · Invoice automation · Analytics dashboard</div>
+      </div>
+      <div class="order-line-price">£2,000</div>
+    </div>
+    <div class="order-line">
+      <div class="order-line-label">
+        Knowledge Base Setup
+        <div class="order-line-sub">30-minute setup session · AI trained on your messages, rates, and contracts</div>
+      </div>
+      <div class="order-line-price">Included</div>
+    </div>
+    <div class="order-line">
+      <div class="order-line-label">
+        Handover & Walkthroughs
+        <div class="order-line-sub">Video walkthrough · Written guide · 30-day post-launch support</div>
+      </div>
+      <div class="order-line-price">Included</div>
+    </div>
+    <div class="order-line">
+      <div class="order-line-label">
+        Infrastructure (AWS)
+        <div class="order-line-sub">Billed directly — not included here</div>
+      </div>
+      <div class="order-line-price">~£20/mo</div>
+    </div>
+
+    <div class="order-total">
+      <div class="order-total-label">Total due today</div>
+      <div class="order-total-price">£2,000</div>
+    </div>
+
+    <div class="what-happens">
+      <div class="what-title">What happens next</div>
+      <div class="what-item">
+        <div class="what-num">1</div>
+        <div class="what-text"><strong>Payment confirmed</strong> — you'll get a receipt by email immediately.</div>
+      </div>
+      <div class="what-item">
+        <div class="what-num">2</div>
+        <div class="what-text"><strong>Bolaji is in touch via WhatsApp</strong> within the hour to book the Week 1 setup session.</div>
+      </div>
+      <div class="what-item">
+        <div class="what-num">3</div>
+        <div class="what-text"><strong>Build begins within 48 hours</strong> of the setup session. Four weeks to go-live.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT: PAYMENT FORM ── -->
+  <div class="page-right">
+
+    <div class="form-area" id="form-area">
+      <div class="form-title">Complete your payment</div>
+
+      <!-- PAYMENT METHOD TABS -->
+      <div class="payment-methods">
+        <button class="pm-tab active" onclick="switchMethod('card', this)">
+          <span class="pm-tab-icon">💳</span> Card
+        </button>
+        <button class="pm-tab" onclick="switchMethod('bank', this)">
+          <span class="pm-tab-icon">🏦</span> Bank Transfer
+        </button>
+      </div>
+
+      <!-- CARD FORM -->
+      <div id="card-form">
+        <div class="form-section">Card details</div>
+
+        <div class="field-group">
+          <label class="field-label">Name on card</label>
+          <input class="field-input" id="card-name" type="text" placeholder="Kam Patel" autocomplete="cc-name">
+        </div>
+
+        <div class="field-group">
+          <div class="card-icons">
+            <div class="card-icon">VISA</div>
+            <div class="card-icon">MC</div>
+            <div class="card-icon">AMEX</div>
+          </div>
+          <label class="field-label">Card number</label>
+          <input class="field-input card-number" id="card-num" type="text" placeholder="1234  5678  9012  3456" maxlength="19" autocomplete="cc-number" oninput="formatCard(this)">
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Expiry date</label>
+            <input class="field-input" id="card-exp" type="text" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp" oninput="formatExpiry(this)">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Security code</label>
+            <input class="field-input" id="card-cvc" type="text" placeholder="CVC" maxlength="4" autocomplete="cc-csc">
+          </div>
+        </div>
+
+        <div class="form-section">Billing details</div>
+
+        <div class="field-group">
+          <label class="field-label">Email address</label>
+          <input class="field-input" id="email" type="email" placeholder="007kam@gmail.com" autocomplete="email">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Billing postcode</label>
+          <input class="field-input" id="postcode" type="text" placeholder="B1 1AA" autocomplete="postal-code">
+        </div>
+
+        <button class="pay-btn" id="pay-btn" onclick="handlePayment()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Pay £2,000
+        </button>
+
+        <div class="security-note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Payments processed securely via Stripe. Your card details are never stored.
+        </div>
+      </div>
+
+      <!-- BANK TRANSFER -->
+      <div id="bank-form" style="display:none;">
+        <div class="bank-details show">
+          <div class="bank-row">
+            <span class="bank-key">Account name</span>
+            <span class="bank-val">
+              Altitude AI Consulting
+              <button class="copy-btn" onclick="copyText(this, 'Altitude AI Consulting')">Copy</button>
+            </span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-key">Sort code</span>
+            <span class="bank-val">
+              04-00-04
+              <button class="copy-btn" onclick="copyText(this, '040004')">Copy</button>
+            </span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-key">Account number</span>
+            <span class="bank-val">
+              00000000
+              <button class="copy-btn" onclick="copyText(this, '00000000')">Copy</button>
+            </span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-key">Reference</span>
+            <span class="bank-val">
+              SS-2026-001
+              <button class="copy-btn" onclick="copyText(this, 'SS-2026-001')">Copy</button>
+            </span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-key">Amount</span>
+            <span class="bank-val">£2,000.00</span>
+          </div>
+          <div class="bank-note">Please use the reference <strong>SS-2026-001</strong> so we can match your payment. Once transferred, send Bolaji a quick WhatsApp and work will begin within 48 hours.</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Your email — for receipt</label>
+          <input class="field-input" id="bank-email" type="email" placeholder="007kam@gmail.com" autocomplete="email">
+        </div>
+
+        <button class="pay-btn" onclick="handleBankConfirm()">
+          I've made the transfer
+        </button>
+
+        <div class="security-note">
+          Work begins once payment is confirmed in our account, usually within 2 hours on a business day.
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Payment received.<br>We're on it.</div>
+      <p class="success-body">Thank you, Kam. Your payment of £2,000 has been received. You'll get a receipt at the email address you provided.</p>
+      <p class="success-body">Bolaji will be in touch via WhatsApp within the hour to get the Week 1 setup session booked in.</p>
+      <div class="success-ref" id="success-ref">Reference: SS-2026-001</div>
+
+      <div class="success-next">
+        <div class="success-next-title">What happens now</div>
+        <div class="success-step"><span class="success-step-dot">✓</span>Payment confirmed — receipt on its way to your inbox</div>
+        <div class="success-step"><span class="success-step-dot">→</span>Bolaji contacts you via WhatsApp — within the hour</div>
+        <div class="success-step"><span class="success-step-dot">→</span>Week 1 setup session booked — 30 minutes, your schedule</div>
+        <div class="success-step"><span class="success-step-dot">→</span>Build begins — four weeks to go-live</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── PICK UP SIGNER NAME FROM PROPOSAL ──
+window.addEventListener('DOMContentLoaded', () => {
+  const signer = sessionStorage.getItem('proposalSigner');
+  if (signer) {
+    const cardName = document.getElementById('card-name');
+    if (cardName) cardName.value = signer;
+  }
+});
+
+// ── PAYMENT METHOD SWITCH ──
+function switchMethod(method, btn) {
+  document.querySelectorAll('.pm-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('card-form').style.display = method === 'card' ? 'block' : 'none';
+  document.getElementById('bank-form').style.display = method === 'bank' ? 'block' : 'none';
+}
+
+// ── CARD FORMATTING ──
+function formatCard(input) {
+  let val = input.value.replace(/\D/g, '').substring(0, 16);
+  input.value = val.replace(/(.{4})/g, '$1  ').trim();
+}
+
+function formatExpiry(input) {
+  let val = input.value.replace(/\D/g, '');
+  if (val.length >= 2) val = val.substring(0,2) + ' / ' + val.substring(2);
+  input.value = val.substring(0,7);
+}
+
+// ── COPY BANK DETAILS ──
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ── VALIDATE ──
+function validate() {
+  let ok = true;
+  const fields = ['card-name','card-num','card-exp','card-cvc','email'];
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+    else el.classList.remove('error');
+  });
+  return ok;
+}
+
+// ── HANDLE CARD PAYMENT ──
+function handlePayment() {
+  if (!validate()) return;
+
+  const btn = document.getElementById('pay-btn');
+  btn.classList.add('loading');
+  btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Processing...';
+
+  // Simulate processing
+  setTimeout(() => {
+    showSuccess();
+  }, 2200);
+}
+
+// ── HANDLE BANK CONFIRM ──
+function handleBankConfirm() {
+  const emailEl = document.getElementById('bank-email');
+  if (!emailEl.value.trim()) {
+    emailEl.classList.add('error');
+    emailEl.focus();
+    return;
+  }
+  showSuccess(true);
+}
+
+// ── SHOW SUCCESS ──
+function showSuccess(isBank=false) {
+  document.getElementById('form-area').style.display = 'none';
+  const screen = document.getElementById('success-screen');
+  screen.classList.add('show');
+
+  if (isBank) {
+    screen.querySelector('.success-title').innerHTML = "Transfer noted.<br>Talk soon.";
+    screen.querySelector('.success-body').textContent = "Thanks, Kam. Once we see the payment land, Bolaji will message you on WhatsApp and we'll get the setup session in the diary.";
+    document.querySelector('.success-step-dot').textContent = '→';
+  }
+
+  const now = new Date();
+  document.getElementById('success-ref').textContent =
+    `Reference: SS-2026-001 · ${now.toLocaleString('en-GB', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'})}`;
+}
+</script>
+</body>
+</html>
