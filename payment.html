@@ -552,119 +552,44 @@ body {
     <div class="form-area" id="form-area">
       <div class="form-title">Complete your payment</div>
 
-      <!-- PAYMENT METHOD TABS -->
-      <div class="payment-methods">
-        <button class="pm-tab active" onclick="switchMethod('card', this)">
-          <span class="pm-tab-icon">💳</span> Card
-        </button>
-        <button class="pm-tab" onclick="switchMethod('bank', this)">
-          <span class="pm-tab-icon">🏦</span> Bank Transfer
-        </button>
-      </div>
+      <!-- MONZO PAYMENT -->
+      <div id="monzo-form">
 
-      <!-- CARD FORM -->
-      <div id="card-form">
-        <div class="form-section">Card details</div>
-
-        <div class="field-group">
-          <label class="field-label">Name on card</label>
-          <input class="field-input" id="card-name" type="text" placeholder="Kam Patel" autocomplete="cc-name">
+        <div style="background:#F9F6FF;border:1px solid #E8E0FF;border-radius:12px;padding:28px 24px;margin-bottom:24px;text-align:center;">
+          <div style="width:56px;height:56px;background:#5F4BE8;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;">🟣</div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#5F4BE8;margin-bottom:8px;">Pay via Monzo</div>
+          <div style="font-size:32px;font-weight:700;color:#0F0F0F;letter-spacing:-1px;margin-bottom:4px;">£2,000.00</div>
+          <div style="font-size:13px;color:#767676;margin-bottom:24px;">Secret Space — AI Booking Engine · Phase 1</div>
+          <a href="https://monzo.me/bolajiolatoye/2000.00?h=4HoFRU" target="_blank"
+             style="display:inline-flex;align-items:center;gap:10px;background:#5F4BE8;color:white;text-decoration:none;padding:14px 32px;border-radius:100px;font-size:15px;font-weight:600;transition:all 0.2s;letter-spacing:0.2px;"
+             onmouseover="this.style.background='#4A38C4';this.style.transform='translateY(-1px)'"
+             onmouseout="this.style.background='#5F4BE8';this.style.transform='translateY(0)'">
+            Pay with Monzo
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
 
-        <div class="field-group">
-          <div class="card-icons">
-            <div class="card-icon">VISA</div>
-            <div class="card-icon">MC</div>
-            <div class="card-icon">AMEX</div>
-          </div>
-          <label class="field-label">Card number</label>
-          <input class="field-input card-number" id="card-num" type="text" placeholder="1234  5678  9012  3456" maxlength="19" autocomplete="cc-number" oninput="formatCard(this)">
-        </div>
-
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">Expiry date</label>
-            <input class="field-input" id="card-exp" type="text" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp" oninput="formatExpiry(this)">
-          </div>
-          <div class="field-group">
-            <label class="field-label">Security code</label>
-            <input class="field-input" id="card-cvc" type="text" placeholder="CVC" maxlength="4" autocomplete="cc-csc">
+        <div style="background:var(--tint);border-radius:10px;padding:18px 20px;margin-bottom:24px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--subtle);margin-bottom:12px;">What happens after you pay</div>
+          <div style="font-size:13px;color:var(--body);line-height:1.8;">
+            1. Pay via the Monzo link above<br>
+            2. Once received, Bolaji will message you on WhatsApp within the hour<br>
+            3. Week 1 setup session gets booked in — work begins within 48 hours
           </div>
         </div>
 
-        <div class="form-section">Billing details</div>
-
-        <div class="field-group">
-          <label class="field-label">Email address</label>
-          <input class="field-input" id="email" type="email" placeholder="007kam@gmail.com" autocomplete="email">
+        <div style="text-align:center;margin-bottom:8px;">
+          <span style="font-size:12px;color:var(--subtle);">Already paid? Let Bolaji know on WhatsApp.</span>
         </div>
 
-        <div class="field-group">
-          <label class="field-label">Billing postcode</label>
-          <input class="field-input" id="postcode" type="text" placeholder="B1 1AA" autocomplete="postal-code">
-        </div>
+        <a href="https://wa.me/447700000000?text=Hi%20Bolaji%2C%20I%27ve%20just%20paid%20the%20%C2%A32%2C000%20for%20the%20Secret%20Space%20AI%20Booking%20Engine%20via%20Monzo.%20Reference%3A%20SS-2026-001"
+           target="_blank"
+           style="display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--rule);background:white;color:var(--body);text-decoration:none;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:500;transition:all 0.15s;"
+           onmouseover="this.style.borderColor='#25D366';this.style.color='#1a7a3c'"
+           onmouseout="this.style.borderColor='var(--rule)';this.style.color='var(--body)'">
+          <span style="font-size:18px;">💬</span> Message Bolaji on WhatsApp
+        </a>
 
-        <button class="pay-btn" id="pay-btn" onclick="handlePayment()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          Pay £2,000
-        </button>
-
-        <div class="security-note">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Payments processed securely via Stripe. Your card details are never stored.
-        </div>
-      </div>
-
-      <!-- BANK TRANSFER -->
-      <div id="bank-form" style="display:none;">
-        <div class="bank-details show">
-          <div class="bank-row">
-            <span class="bank-key">Account name</span>
-            <span class="bank-val">
-              Altitude AI Consulting
-              <button class="copy-btn" onclick="copyText(this, 'Altitude AI Consulting')">Copy</button>
-            </span>
-          </div>
-          <div class="bank-row">
-            <span class="bank-key">Sort code</span>
-            <span class="bank-val">
-              04-00-04
-              <button class="copy-btn" onclick="copyText(this, '040004')">Copy</button>
-            </span>
-          </div>
-          <div class="bank-row">
-            <span class="bank-key">Account number</span>
-            <span class="bank-val">
-              00000000
-              <button class="copy-btn" onclick="copyText(this, '00000000')">Copy</button>
-            </span>
-          </div>
-          <div class="bank-row">
-            <span class="bank-key">Reference</span>
-            <span class="bank-val">
-              SS-2026-001
-              <button class="copy-btn" onclick="copyText(this, 'SS-2026-001')">Copy</button>
-            </span>
-          </div>
-          <div class="bank-row">
-            <span class="bank-key">Amount</span>
-            <span class="bank-val">£2,000.00</span>
-          </div>
-          <div class="bank-note">Please use the reference <strong>SS-2026-001</strong> so we can match your payment. Once transferred, send Bolaji a quick WhatsApp and work will begin within 48 hours.</div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label">Your email — for receipt</label>
-          <input class="field-input" id="bank-email" type="email" placeholder="007kam@gmail.com" autocomplete="email">
-        </div>
-
-        <button class="pay-btn" onclick="handleBankConfirm()">
-          I've made the transfer
-        </button>
-
-        <div class="security-note">
-          Work begins once payment is confirmed in our account, usually within 2 hours on a business day.
-        </div>
       </div>
     </div>
 
@@ -698,26 +623,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ── PAYMENT METHOD SWITCH ──
-function switchMethod(method, btn) {
-  document.querySelectorAll('.pm-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('card-form').style.display = method === 'card' ? 'block' : 'none';
-  document.getElementById('bank-form').style.display = method === 'bank' ? 'block' : 'none';
-}
-
-// ── CARD FORMATTING ──
-function formatCard(input) {
-  let val = input.value.replace(/\D/g, '').substring(0, 16);
-  input.value = val.replace(/(.{4})/g, '$1  ').trim();
-}
-
-function formatExpiry(input) {
-  let val = input.value.replace(/\D/g, '');
-  if (val.length >= 2) val = val.substring(0,2) + ' / ' + val.substring(2);
-  input.value = val.substring(0,7);
-}
-
 // ── COPY BANK DETAILS ──
 function copyText(btn, text) {
   navigator.clipboard.writeText(text).then(() => {
@@ -725,60 +630,6 @@ function copyText(btn, text) {
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   });
-}
-
-// ── VALIDATE ──
-function validate() {
-  let ok = true;
-  const fields = ['card-name','card-num','card-exp','card-cvc','email'];
-  fields.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el.value.trim()) { el.classList.add('error'); ok = false; }
-    else el.classList.remove('error');
-  });
-  return ok;
-}
-
-// ── HANDLE CARD PAYMENT ──
-function handlePayment() {
-  if (!validate()) return;
-
-  const btn = document.getElementById('pay-btn');
-  btn.classList.add('loading');
-  btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Processing...';
-
-  // Simulate processing
-  setTimeout(() => {
-    showSuccess();
-  }, 2200);
-}
-
-// ── HANDLE BANK CONFIRM ──
-function handleBankConfirm() {
-  const emailEl = document.getElementById('bank-email');
-  if (!emailEl.value.trim()) {
-    emailEl.classList.add('error');
-    emailEl.focus();
-    return;
-  }
-  showSuccess(true);
-}
-
-// ── SHOW SUCCESS ──
-function showSuccess(isBank=false) {
-  document.getElementById('form-area').style.display = 'none';
-  const screen = document.getElementById('success-screen');
-  screen.classList.add('show');
-
-  if (isBank) {
-    screen.querySelector('.success-title').innerHTML = "Transfer noted.<br>Talk soon.";
-    screen.querySelector('.success-body').textContent = "Thanks, Kam. Once we see the payment land, Bolaji will message you on WhatsApp and we'll get the setup session in the diary.";
-    document.querySelector('.success-step-dot').textContent = '→';
-  }
-
-  const now = new Date();
-  document.getElementById('success-ref').textContent =
-    `Reference: SS-2026-001 · ${now.toLocaleString('en-GB', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'})}`;
 }
 </script>
 </body>
